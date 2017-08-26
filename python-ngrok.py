@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # 建议Python 2.7.13 或 Python 3.1 以上运行
 # Version: v1.41
@@ -29,20 +29,20 @@ lport 映射端口，修改成自己要映射的端口，例如80，或者22
 
 如果需要同时启动多个隧道则
 '''
-body['protocol'] = 'http'
+body['protocol'] = 'tcp'
 body['hostname'] = ''
-body['subdomain'] = 'sooviidebug'
-body['rport'] = 5000
-body['lhost'] = '192.168.3.211'
-body['lport'] = 80
+body['subdomain'] = 'server'
+body['rport'] = 50324
+body['lhost'] = '192.168.1.1'
+body['lport'] = 22
 
 # 启动多个隧道
-body1 = dict();
+body1 = dict()
 body1['protocol'] = 'http'
 body1['hostname'] = ''
-body1['subdomain'] = 'yves175'
-body1['rport'] = 1337
-body1['lhost'] = '192.168.3.211'
+body1['subdomain'] = 'yves'
+body1['rport'] = 80
+body1['lhost'] = '192.168.1.1'
 body1['lport'] = 80
 Tunnels.append(body)  # 加入渠道队列
 Tunnels.append(body1)  # 加入渠道队列
@@ -66,8 +66,11 @@ def getloacladdr(Tunnels, Url):
             if tunnelinfo.get('subdomain') == subdomain:
                 return tunnelinfo
         if tunnelinfo.get('protocol') == 'tcp':
-            if tunnelinfo.get('rport') == int(rport):
-                return tunnelinfo
+            try:
+                if tunnelinfo.get('rport') == int(rport):
+                    return tunnelinfo
+            except:
+                pass
 
     return dict()
 
